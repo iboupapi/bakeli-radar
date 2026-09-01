@@ -45,8 +45,8 @@ export const RadarAiModal = ({ isOpen, onClose }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-xs animate-fadeIn">
-      <div className="bg-white rounded-3xl max-w-lg w-full h-[600px] shadow-2xl border border-gray-100 flex flex-col overflow-hidden relative">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/40 backdrop-blur-xs animate-fadeIn">
+      <div className="bg-white rounded-3xl w-[95vw] sm:max-w-lg h-[85vh] max-h-[600px] shadow-2xl border border-gray-100 flex flex-col overflow-hidden relative">
         
         {/* Top Emerald Header matching screenshot 2 */}
         <div className="bg-emerald-800 text-white p-6 flex items-center justify-between relative shrink-0">
