@@ -6,7 +6,10 @@ import { MarketTrends } from './components/MarketTrends';
 import { PartnersView } from './components/PartnersView';
 import { AlertsModal } from './components/AlertsModal';
 import { RadarAiModal } from './components/RadarAiModal';
+import { MonitoringModal } from './components/MonitoringModal';
+import { CvScoringModal } from './components/CvScoringModal';
 import { apiService } from './services/api';
+import { Activity } from 'lucide-react';
 
 export function App() {
   const [activeTab, setActiveTab] = useState('opportunities'); // 'opportunities' | 'trends' | 'partners'
@@ -25,6 +28,8 @@ export function App() {
   // Modals state
   const [isAlertsOpen, setIsAlertsOpen] = useState(false);
   const [isAiOpen, setIsAiOpen] = useState(false);
+  const [isMonitoringOpen, setIsMonitoringOpen] = useState(false);
+  const [isCvScoringOpen, setIsCvScoringOpen] = useState(false);
   const [selectedOpportunity, setSelectedOpportunity] = useState(null);
 
   // Fetch opportunities whenever filters change
@@ -93,6 +98,7 @@ export function App() {
         setActiveTab={setActiveTab}
         onOpenAlerts={() => setIsAlertsOpen(true)}
         onOpenAi={() => setIsAiOpen(true)}
+        onOpenCvScoring={() => setIsCvScoringOpen(true)}
       />
 
       {/* Main Content Container */}
@@ -130,8 +136,16 @@ export function App() {
       </main>
 
       {/* Footer */}
-      <footer className="bg-white border-t border-gray-100 py-6 mt-12 text-center text-xs text-gray-400">
+      <footer className="bg-white border-t border-gray-100 py-6 mt-12 px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-gray-500">
         <p>© 2026 BakeliRadar. Tous droits réservés. Plateforme d'opportunités au Sénégal.</p>
+        <button
+          onClick={() => setIsMonitoringOpen(true)}
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-700 font-medium transition-colors cursor-pointer"
+          title="Voir l'état de santé et les métriques de scraping"
+        >
+          <Activity className="w-4 h-4 text-emerald-600 animate-pulse" />
+          <span>System Health & Monitoring</span>
+        </button>
       </footer>
 
       {/* Modals */}
@@ -143,6 +157,16 @@ export function App() {
       <RadarAiModal
         isOpen={isAiOpen}
         onClose={() => setIsAiOpen(false)}
+      />
+
+      <MonitoringModal
+        isOpen={isMonitoringOpen}
+        onClose={() => setIsMonitoringOpen(false)}
+      />
+
+      <CvScoringModal
+        isOpen={isCvScoringOpen}
+        onClose={() => setIsCvScoringOpen(false)}
       />
 
     </div>

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Bell, Sparkles, Target, Menu, X } from 'lucide-react';
+import { Bell, Sparkles, Target, Menu, X, FileSearch } from 'lucide-react';
 
-export const Navbar = ({ activeTab, setActiveTab, onOpenAlerts, onOpenAi }) => {
+export const Navbar = ({ activeTab, setActiveTab, onOpenAlerts, onOpenAi, onOpenCvScoring }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const handleNavClick = (tab) => {
@@ -57,15 +57,24 @@ export const Navbar = ({ activeTab, setActiveTab, onOpenAlerts, onOpenAi }) => {
           </button>
         </nav>
 
-        {/* Actions (Alerts & Radar AI) & Mobile Hamburger */}
+        {/* Actions (Alerts, CV Score, Radar AI) & Mobile Hamburger */}
         <div className="flex items-center gap-2 sm:gap-3">
           <button
             onClick={onOpenAlerts}
-            className="flex items-center gap-1.5 px-3 sm:px-4 py-2 rounded-full border border-emerald-100 bg-emerald-50/50 text-emerald-700 hover:bg-emerald-100/60 font-medium text-xs sm:text-sm transition-all shadow-2xs cursor-pointer"
+            className="hidden sm:flex items-center gap-1.5 px-3 sm:px-4 py-2 rounded-full border border-emerald-100 bg-emerald-50/50 text-emerald-700 hover:bg-emerald-100/60 font-medium text-xs sm:text-sm transition-all shadow-2xs cursor-pointer"
             title="Alertes"
           >
             <Bell className="w-4 h-4 text-emerald-600" />
-            <span className="hidden sm:inline">Alertes</span>
+            <span>Alertes</span>
+          </button>
+
+          <button
+            onClick={onOpenCvScoring}
+            className="flex items-center gap-1.5 px-3 sm:px-4 py-2 rounded-full border border-emerald-200 bg-emerald-50 text-emerald-800 hover:bg-emerald-100 font-semibold text-xs sm:text-sm transition-all shadow-xs cursor-pointer"
+            title="Analyser son CV"
+          >
+            <FileSearch className="w-4 h-4 text-emerald-600" />
+            <span>Score CV</span>
           </button>
 
           <button
