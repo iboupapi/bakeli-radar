@@ -2,7 +2,7 @@ import React from 'react';
 import { OpportunityCard } from './OpportunityCard';
 import { Sparkles, Inbox } from 'lucide-react';
 
-export const OpportunityList = ({ opportunities, lastUpdated, onSelectOpportunity }) => {
+export const OpportunityList = ({ opportunities, lastUpdated, onSelectOpportunity, onScoreOpportunity }) => {
   return (
     <div className="flex-1 flex flex-col gap-6">
       
@@ -33,7 +33,8 @@ export const OpportunityList = ({ opportunities, lastUpdated, onSelectOpportunit
             <OpportunityCard 
               key={opp.id} 
               opportunity={opp} 
-              onSelect={onSelectOpportunity} 
+              onSelect={onSelectOpportunity}
+              onScore={onScoreOpportunity}
             />
           ))}
         </div>

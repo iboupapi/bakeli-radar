@@ -163,6 +163,14 @@ export const apiService = {
     return !!localStorage.getItem("jwt_token");
   },
 
+  // Fetch single job detail GET /api/radar_jobs/jobs/<id>/
+  // jobId peut être id numérique (ex: "0") ou offer_url complète -> encodeURIComponent côté front, <path:job_id> côté Django
+  async getJobDetail(jobId) {
+    if (!jobId && jobId !== 0) throw new Error("jobId requis");
+    const encoded = encodeURIComponent(String(jobId));
+    return await apiFetch(API_BASE_URL, `/jobs/${encoded}/`);
+  },
+
   // Fetch all opportunities from backend GET /api/radar_jobs/jobs/
   async getOpportunities(filters = {}) {
     try {
@@ -176,7 +184,7 @@ export const apiService = {
       const jobsList = res.jobs || res.results || (Array.isArray(res) ? res : []);
 
       const formattedData = jobsList.map((item) => ({
-        id: item.id,
+        id: String(item.id ?? item.offer_url ?? ""),
         title: item.title,
         company: item.company || "Entreprise Partenaire",
         type: item.type || "Emploi",
@@ -370,7 +378,7 @@ export const apiService = {
     }
   },
 
-  // CV Scoring Public Endpoints
+  // CV Scoring Public Endpoints (legacy double-upload)
   async matchCvFile(cvFile, jobFile) {
     const formData = new FormData();
     formData.append("cv", cvFile);
@@ -393,6 +401,58 @@ export const apiService = {
     return await apiFetch(CV_API_URL, "/match-url/", {
       method: "POST",
       body: JSON.stringify({ cv_url: cvUrl, job_url: jobUrl }),
+    });
+  },
+
+  // NOUVEAU: Scoring depuis offre scrapée — public (job_id + CV upload)
+  // Usage: apiService.analyzeScrapedPublic("0" ou offer_url, File)
+  // jobId = offer_url (recommandé, stable) ou id numérique
+  async analyzeScrapedPublic(jobId, cvFile) {
+    if (!jobId && jobId !== 0) throw new Error("jobId requis");
+    if (!cvFile) throw new Error("Fichier CV requis");
+    if (cvFile.size && cvFile.size > 5 * 1024 * 1024) throw new Error("CV trop volumineux (max 5 Mo)");
+    const formData = new FormData();
+    formData.append("job_id", String(jobId));
+    formData.append("cv", cvFile);
+    const token = localStorage.getItem("jwt_token");
+    const cleanBase = CV_API_URL.replace(/\/+$/, "");
+    const url = `${cleanBase}/analyze-scraped/`;
+    const response = await fetch(url, {
+      method: "POST",
+      headers: { ...(token ? { Authorization: `Bearer ${token}` } : {}) },
+      body: formData,
+    });
+    if (!response.ok) {
+      const ct = response.headers.get("content-type") || "";
+      let detail = "";
+      try {
+        if (ct.includes("application/json")) {
+          const j = await response.json();
+          detail = j.error || j.detail || JSON.stringify(j);
+        } else {
+          const text = await response.text();
+          const isHtml = text.trim().toLowerCase().startsWith("<!doctype") || text.trim().toLowerCase().startsWith("<html");
+          if (response.status === 404 && isHtml) {
+            detail = "Endpoint /analyze-scraped/ non déployé sur le backend prod (api-wagan.bakeli.tech). Déployez wagan-api (git push) ou testez en local avec VITE_CV_API_URL=http://127.0.0.1:8000/api/cv-scoring";
+          } else if (isHtml) {
+            detail = `Erreur serveur (${response.status}) — réponse HTML inattendue. Vérifiez que le backend est à jour.`;
+          } else {
+            detail = text.slice(0, 500);
+          }
+        }
+      } catch { detail = `status ${response.status}`; }
+      throw new Error(detail || `Erreur ${response.status}`);
+    }
+    return response.json();
+  },
+
+  // NOUVEAU: Scoring depuis offre scrapée — avec profil (auth, CV stocké)
+  // Usage: apiService.analyzeScrapedProfile("0" ou offer_url)
+  async analyzeScrapedProfile(jobId) {
+    if (!jobId && jobId !== 0) throw new Error("jobId requis");
+    return await apiFetch(CV_API_URL, "/analyze-scraped/profile/", {
+      method: "POST",
+      body: JSON.stringify({ job_id: String(jobId) }),
     });
   },
 
