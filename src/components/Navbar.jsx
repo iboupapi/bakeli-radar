@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Bell, Sparkles, Target, Menu, X, FileSearch } from 'lucide-react';
+import { Bell, Sparkles, Menu, X, FileSearch } from 'lucide-react';
 
 export const Navbar = ({ activeTab, setActiveTab, onOpenAlerts, onOpenAi, onOpenCvScoring }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -15,9 +15,7 @@ export const Navbar = ({ activeTab, setActiveTab, onOpenAlerts, onOpenAi, onOpen
         
         {/* Logo */}
         <div className="flex items-center gap-3 cursor-pointer" onClick={() => handleNavClick('opportunities')}>
-          <div className="w-10 h-10 rounded-full bg-emerald-600 flex items-center justify-center text-white shadow-md">
-            <Target className="w-6 h-6" />
-          </div>
+          <img src="/logo_bakeli.png" alt="Bakeli Radar" className="w-10 h-10 rounded-xl object-contain shadow-sm" />
           <span className="text-xl sm:text-2xl font-bold tracking-tight text-gray-900">
             Bakeli<span className="text-emerald-600">Radar</span>
           </span>

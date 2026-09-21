@@ -1,13 +1,11 @@
 import React from 'react';
-import { Target, Activity } from 'lucide-react';
+import { Activity } from 'lucide-react';
 
 export const Footer = ({ onOpenMonitoring }) => {
   return (
     <footer className="bg-white border-t border-gray-100 py-8 px-4 sm:px-6 lg:px-8 mt-12 flex flex-col items-center justify-center text-center gap-3">
       <div className="flex items-center gap-2 font-bold text-gray-900 text-sm">
-        <div className="w-6 h-6 rounded-full bg-emerald-600 flex items-center justify-center text-white shrink-0 shadow-sm">
-          <Target className="w-3.5 h-3.5" />
-        </div>
+        <img src="/logo_bakeli.png" alt="Bakeli Radar" className="w-6 h-6 rounded-md object-contain shadow-xs" />
         <span>Bakeli Radar</span>
       </div>
 
