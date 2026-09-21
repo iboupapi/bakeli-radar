@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Sparkles, X, Send, Bot, User, MapPin, Building2, Briefcase, Clock, GraduationCap, ExternalLink, Target, Award, Timer } from 'lucide-react';
 import { apiService } from '../services/api';
 
-// Parse le format texte du backend en offres structurées
 function parseOffers(text) {
   if (!text.includes('📌') || !text.includes('offres trouvées')) return null;
   try {
@@ -182,102 +181,100 @@ export const RadarAiModal = ({ isOpen, onClose }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/40 backdrop-blur-xs animate-fadeIn">
-      <div className="bg-white rounded-3xl w-[95vw] sm:max-w-[600px] h-[85vh] max-h-[640px] shadow-2xl border border-gray-100 flex flex-col overflow-hidden relative">
-        
-        {/* Header exact as screenshot */}
-        <div className="bg-emerald-700 text-white p-5 flex items-center justify-between relative shrink-0">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-emerald-600 flex items-center justify-center text-emerald-200 shadow-sm">
-              <Sparkles className="w-5 h-5 animate-pulse" />
-            </div>
-            <div>
-              <h3 className="font-bold text-base text-white">Radar AI Assistant</h3>
-              <p className="text-xs text-emerald-200 font-medium">Toujours à l'écoute des opportunités</p>
-            </div>
+    <div className="fixed right-0 top-0 h-full w-full sm:w-[460px] bg-white shadow-2xl z-50 flex flex-col border-l border-gray-100 animate-slideLeft">
+      
+      {/* Header */}
+      <div className="bg-emerald-700 text-white p-5 flex items-center justify-between relative shrink-0">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-emerald-600 flex items-center justify-center text-emerald-200 shadow-sm">
+            <Sparkles className="w-5 h-5 animate-pulse" />
           </div>
-          <button
-            onClick={onClose}
-            className="w-9 h-9 rounded-full bg-emerald-600/60 hover:bg-emerald-600 text-white flex items-center justify-center transition-colors cursor-pointer"
-          >
-            <X className="w-5 h-5" />
-          </button>
+          <div>
+            <h3 className="font-bold text-base text-white">Radar AI Assistant</h3>
+            <p className="text-xs text-emerald-200 font-medium">Toujours à l'écoute des opportunités</p>
+          </div>
         </div>
+        <button
+          onClick={onClose}
+          className="w-9 h-9 rounded-full bg-emerald-600/60 hover:bg-emerald-600 text-white flex items-center justify-center transition-colors cursor-pointer"
+        >
+          <X className="w-5 h-5" />
+        </button>
+      </div>
 
-        {/* Messages */}
-        <div className="flex-1 p-4 sm:p-6 overflow-y-auto flex flex-col gap-4 bg-gray-50/50">
-          {messages.map((msg, index) => {
-            const isAi = msg.sender === 'ai';
-            const isOfferMsg = isAi && msg.text.includes('📌') && msg.text.includes('offres trouvées');
-            return (
-              <div key={index} className={`flex items-start gap-3 ${isAi ? 'self-start w-full' : 'self-end max-w-[82%] flex-row-reverse'}`}>
-                {isAi ? (
-                  <div className="w-8 h-8 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0 mt-1">
-                    <Bot className="w-4 h-4" />
-                  </div>
-                ) : (
-                  <div className="w-8 h-8 rounded-full bg-emerald-600 text-white flex items-center justify-center shrink-0 mt-1">
-                    <User className="w-4 h-4" />
+      {/* Messages */}
+      <div className="flex-1 p-4 sm:p-6 overflow-y-auto flex flex-col gap-4 bg-gray-50/50">
+        {messages.map((msg, index) => {
+          const isAi = msg.sender === 'ai';
+          const isOfferMsg = isAi && msg.text.includes('📌') && msg.text.includes('offres trouvées');
+          return (
+            <div key={index} className={`flex items-start gap-3 ${isAi ? 'self-start w-full' : 'self-end max-w-[82%] flex-row-reverse'}`}>
+              {isAi ? (
+                <div className="w-8 h-8 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0 mt-1">
+                  <Bot className="w-4 h-4" />
+                </div>
+              ) : (
+                <div className="w-8 h-8 rounded-full bg-emerald-600 text-white flex items-center justify-center shrink-0 mt-1">
+                  <User className="w-4 h-4" />
+                </div>
+              )}
+              <div className={`${isAi ? (isOfferMsg ? 'flex-1 min-w-0' : 'max-w-[85%]') : 'max-w-full'} p-4 rounded-2xl text-sm shadow-2xs ${
+                isAi ? 'bg-white border border-gray-100 rounded-tl-sm' : 'bg-emerald-600 text-white rounded-tr-sm'
+              }`}>
+                {isAi && (
+                  <div className="text-[10px] font-bold text-emerald-600 uppercase tracking-widest mb-1.5 flex items-center gap-1">
+                    <Bot className="w-3 h-3" /> RADAR AI
                   </div>
                 )}
-                <div className={`${isAi ? (isOfferMsg ? 'flex-1 min-w-0' : 'max-w-[85%]') : 'max-w-full'} p-4 rounded-2xl text-sm shadow-2xs ${
-                  isAi ? 'bg-white border border-gray-100 rounded-tl-sm' : 'bg-emerald-600 text-white rounded-tr-sm'
-                }`}>
-                  {isAi && (
-                    <div className="text-[10px] font-bold text-emerald-600 uppercase tracking-widest mb-1.5 flex items-center gap-1">
-                      <Bot className="w-3 h-3" /> RADAR AI
-                    </div>
-                  )}
-                  {isAi ? <FormattedText text={msg.text} /> : <span className="leading-relaxed">{msg.text}</span>}
-                </div>
-              </div>
-            );
-          })}
-          {loading && (
-            <div className="flex items-start gap-3 self-start">
-              <div className="w-8 h-8 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0">
-                <Bot className="w-4 h-4" />
-              </div>
-              <div className="px-4 py-3 bg-white border border-gray-100 rounded-2xl rounded-tl-sm shadow-2xs flex items-center gap-2 text-sm text-gray-500">
-                <span className="w-2 h-2 bg-emerald-500 rounded-full animate-bounce [animation-delay:-0.3s]" />
-                <span className="w-2 h-2 bg-emerald-500 rounded-full animate-bounce [animation-delay:-0.15s]" />
-                <span className="w-2 h-2 bg-emerald-500 rounded-full animate-bounce" />
-                <span className="ml-1">Recherche en cours...</span>
+                {isAi ? <FormattedText text={msg.text} /> : <span className="leading-relaxed">{msg.text}</span>}
               </div>
             </div>
-          )}
-          <div ref={messagesEndRef} />
-        </div>
-
-        {/* Input */}
-        <div className="p-4 bg-white border-t border-gray-100 flex flex-col gap-2 shrink-0">
-          {rateLimit > 0 && (
-            <div className="flex items-center gap-2 px-3 py-2 bg-amber-50 border border-amber-200 rounded-xl text-xs text-amber-800">
-              <Timer className="w-4 h-4 animate-pulse" />
-              <span className="font-semibold">Patiente {rateLimit}s avant de renvoyer</span>
+          );
+        })}
+        {loading && (
+          <div className="flex items-start gap-3 self-start">
+            <div className="w-8 h-8 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0">
+              <Bot className="w-4 h-4" />
             </div>
-          )}
-          <form onSubmit={handleSend} className="relative flex items-center">
-            <input
-              type="text"
-              placeholder={rateLimit > 0 ? `Patiente ${rateLimit}s...` : "Ex: Stages en info à Dakar..."}
-              value={inputVal}
-              onChange={(e) => setInputVal(e.target.value)}
-              disabled={rateLimit > 0}
-              className="w-full pl-4 pr-12 py-3 bg-gray-50 border border-gray-200 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white transition-all placeholder:text-gray-400 disabled:opacity-60"
-            />
-            <button
-              type="submit"
-              disabled={!inputVal.trim() || loading || rateLimit > 0}
-              className="absolute right-1.5 w-9 h-9 rounded-xl bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 text-white flex items-center justify-center transition-all shadow-sm cursor-pointer"
-            >
-              <Send className="w-4 h-4" />
-            </button>
-          </form>
-          <p className="text-[11px] text-center text-gray-400">L'IA peut faire des erreurs. Vérifiez les infos officielles.</p>
-        </div>
-
+            <div className="px-4 py-3 bg-white border border-gray-100 rounded-2xl rounded-tl-sm shadow-2xs flex items-center gap-2 text-sm text-gray-500">
+              <span className="w-2 h-2 bg-emerald-500 rounded-full animate-bounce [animation-delay:-0.3s]" />
+              <span className="w-2 h-2 bg-emerald-500 rounded-full animate-bounce [animation-delay:-0.15s]" />
+              <span className="w-2 h-2 bg-emerald-500 rounded-full animate-bounce" />
+              <span className="ml-1">Recherche en cours...</span>
+            </div>
+          </div>
+        )}
+        <div ref={messagesEndRef} />
       </div>
+
+      {/* Input */}
+      <div className="p-4 bg-white border-t border-gray-100 flex flex-col gap-2 shrink-0">
+        {rateLimit > 0 && (
+          <div className="flex items-center gap-2 px-3 py-2 bg-amber-50 border border-amber-200 rounded-xl text-xs text-amber-800">
+            <Timer className="w-4 h-4 animate-pulse" />
+            <span className="font-semibold">Patiente {rateLimit}s avant de renvoyer</span>
+          </div>
+        )}
+        <form onSubmit={handleSend} className="relative flex items-center">
+          <input
+            type="text"
+            placeholder={rateLimit > 0 ? `Patiente ${rateLimit}s...` : "Ex: Stages en info à Dakar..."}
+            value={inputVal}
+            onChange={(e) => setInputVal(e.target.value)}
+            disabled={rateLimit > 0}
+            className="w-full pl-4 pr-12 py-3 bg-gray-50 border border-gray-200 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white transition-all placeholder:text-gray-400 disabled:opacity-60"
+          />
+          <button
+            type="submit"
+            disabled={!inputVal.trim() || loading || rateLimit > 0}
+            className="absolute right-1.5 w-9 h-9 rounded-xl bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 text-white flex items-center justify-center transition-all shadow-sm cursor-pointer"
+          >
+            <Send className="w-4 h-4" />
+          </button>
+        </form>
+        <p className="text-[11px] text-center text-gray-400">L'IA peut faire des erreurs. Vérifiez les infos officielles.</p>
+      </div>
+
     </div>
   );
 };
