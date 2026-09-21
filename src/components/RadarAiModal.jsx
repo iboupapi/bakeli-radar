@@ -181,48 +181,48 @@ export const RadarAiModal = ({ isOpen, onClose }) => {
   };
 
   return (
-    <div className="fixed right-0 top-0 h-full w-full sm:w-[460px] bg-white shadow-2xl z-50 flex flex-col border-l border-gray-100 animate-slideLeft">
+    <div className="fixed right-6 bottom-6 w-[380px] sm:w-[400px] h-[540px] rounded-3xl shadow-2xl z-50 bg-white flex flex-col border border-gray-100 overflow-hidden animate-fadeIn">
       
       {/* Header */}
-      <div className="bg-emerald-700 text-white p-5 flex items-center justify-between relative shrink-0">
+      <div className="bg-emerald-700 text-white p-4 flex items-center justify-between relative shrink-0">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-emerald-600 flex items-center justify-center text-emerald-200 shadow-sm">
-            <Sparkles className="w-5 h-5 animate-pulse" />
+          <div className="w-9 h-9 rounded-xl bg-emerald-600 flex items-center justify-center text-emerald-200 shadow-sm">
+            <Sparkles className="w-4 h-4 animate-pulse" />
           </div>
           <div>
-            <h3 className="font-bold text-base text-white">Radar AI Assistant</h3>
-            <p className="text-xs text-emerald-200 font-medium">Toujours à l'écoute des opportunités</p>
+            <h3 className="font-bold text-sm text-white">Radar AI Assistant</h3>
+            <p className="text-[11px] text-emerald-200 font-medium">Toujours à l'écoute des opportunités</p>
           </div>
         </div>
         <button
           onClick={onClose}
-          className="w-9 h-9 rounded-full bg-emerald-600/60 hover:bg-emerald-600 text-white flex items-center justify-center transition-colors cursor-pointer"
+          className="w-8 h-8 rounded-full bg-emerald-600/60 hover:bg-emerald-600 text-white flex items-center justify-center transition-colors cursor-pointer"
         >
-          <X className="w-5 h-5" />
+          <X className="w-4 h-4" />
         </button>
       </div>
 
       {/* Messages */}
-      <div className="flex-1 p-4 sm:p-6 overflow-y-auto flex flex-col gap-4 bg-gray-50/50">
+      <div className="flex-1 p-4 overflow-y-auto flex flex-col gap-3 bg-gray-50/50">
         {messages.map((msg, index) => {
           const isAi = msg.sender === 'ai';
           const isOfferMsg = isAi && msg.text.includes('📌') && msg.text.includes('offres trouvées');
           return (
-            <div key={index} className={`flex items-start gap-3 ${isAi ? 'self-start w-full' : 'self-end max-w-[82%] flex-row-reverse'}`}>
+            <div key={index} className={`flex items-start gap-2.5 ${isAi ? 'self-start w-full' : 'self-end max-w-[85%] flex-row-reverse'}`}>
               {isAi ? (
-                <div className="w-8 h-8 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0 mt-1">
-                  <Bot className="w-4 h-4" />
+                <div className="w-7 h-7 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0 mt-1">
+                  <Bot className="w-3.5 h-3.5" />
                 </div>
               ) : (
-                <div className="w-8 h-8 rounded-full bg-emerald-600 text-white flex items-center justify-center shrink-0 mt-1">
-                  <User className="w-4 h-4" />
+                <div className="w-7 h-7 rounded-full bg-emerald-600 text-white flex items-center justify-center shrink-0 mt-1">
+                  <User className="w-3.5 h-3.5" />
                 </div>
               )}
-              <div className={`${isAi ? (isOfferMsg ? 'flex-1 min-w-0' : 'max-w-[85%]') : 'max-w-full'} p-4 rounded-2xl text-sm shadow-2xs ${
+              <div className={`${isAi ? (isOfferMsg ? 'flex-1 min-w-0' : 'max-w-[85%]') : 'max-w-full'} p-3 rounded-2xl text-xs sm:text-sm shadow-2xs ${
                 isAi ? 'bg-white border border-gray-100 rounded-tl-sm' : 'bg-emerald-600 text-white rounded-tr-sm'
               }`}>
                 {isAi && (
-                  <div className="text-[10px] font-bold text-emerald-600 uppercase tracking-widest mb-1.5 flex items-center gap-1">
+                  <div className="text-[9px] font-bold text-emerald-600 uppercase tracking-widest mb-1 flex items-center gap-1">
                     <Bot className="w-3 h-3" /> RADAR AI
                   </div>
                 )}
@@ -232,15 +232,15 @@ export const RadarAiModal = ({ isOpen, onClose }) => {
           );
         })}
         {loading && (
-          <div className="flex items-start gap-3 self-start">
-            <div className="w-8 h-8 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0">
-              <Bot className="w-4 h-4" />
+          <div className="flex items-start gap-2.5 self-start">
+            <div className="w-7 h-7 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0">
+              <Bot className="w-3.5 h-3.5" />
             </div>
-            <div className="px-4 py-3 bg-white border border-gray-100 rounded-2xl rounded-tl-sm shadow-2xs flex items-center gap-2 text-sm text-gray-500">
-              <span className="w-2 h-2 bg-emerald-500 rounded-full animate-bounce [animation-delay:-0.3s]" />
-              <span className="w-2 h-2 bg-emerald-500 rounded-full animate-bounce [animation-delay:-0.15s]" />
-              <span className="w-2 h-2 bg-emerald-500 rounded-full animate-bounce" />
-              <span className="ml-1">Recherche en cours...</span>
+            <div className="px-3.5 py-2.5 bg-white border border-gray-100 rounded-2xl rounded-tl-sm shadow-2xs flex items-center gap-2 text-xs text-gray-500">
+              <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-bounce [animation-delay:-0.3s]" />
+              <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-bounce [animation-delay:-0.15s]" />
+              <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-bounce" />
+              <span className="ml-1">Recherche...</span>
             </div>
           </div>
         )}
@@ -248,11 +248,11 @@ export const RadarAiModal = ({ isOpen, onClose }) => {
       </div>
 
       {/* Input */}
-      <div className="p-4 bg-white border-t border-gray-100 flex flex-col gap-2 shrink-0">
+      <div className="p-3 bg-white border-t border-gray-100 flex flex-col gap-2 shrink-0">
         {rateLimit > 0 && (
-          <div className="flex items-center gap-2 px-3 py-2 bg-amber-50 border border-amber-200 rounded-xl text-xs text-amber-800">
-            <Timer className="w-4 h-4 animate-pulse" />
-            <span className="font-semibold">Patiente {rateLimit}s avant de renvoyer</span>
+          <div className="flex items-center gap-2 px-3 py-1.5 bg-amber-50 border border-amber-200 rounded-xl text-[11px] text-amber-800">
+            <Timer className="w-3.5 h-3.5 animate-pulse" />
+            <span className="font-semibold">Patiente {rateLimit}s</span>
           </div>
         )}
         <form onSubmit={handleSend} className="relative flex items-center">
@@ -262,17 +262,17 @@ export const RadarAiModal = ({ isOpen, onClose }) => {
             value={inputVal}
             onChange={(e) => setInputVal(e.target.value)}
             disabled={rateLimit > 0}
-            className="w-full pl-4 pr-12 py-3 bg-gray-50 border border-gray-200 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white transition-all placeholder:text-gray-400 disabled:opacity-60"
+            className="w-full pl-3.5 pr-11 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white transition-all placeholder:text-gray-400 disabled:opacity-60"
           />
           <button
             type="submit"
             disabled={!inputVal.trim() || loading || rateLimit > 0}
-            className="absolute right-1.5 w-9 h-9 rounded-xl bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 text-white flex items-center justify-center transition-all shadow-sm cursor-pointer"
+            className="absolute right-1 w-8 h-8 rounded-lg bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 text-white flex items-center justify-center transition-all shadow-sm cursor-pointer"
           >
-            <Send className="w-4 h-4" />
+            <Send className="w-3.5 h-3.5" />
           </button>
         </form>
-        <p className="text-[11px] text-center text-gray-400">L'IA peut faire des erreurs. Vérifiez les infos officielles.</p>
+        <p className="text-[10px] text-center text-gray-400">L'IA peut faire des erreurs. Vérifiez les infos officielles.</p>
       </div>
 
     </div>
