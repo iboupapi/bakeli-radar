@@ -7,7 +7,7 @@ import { apiService } from '../services/api';
 
 export const OpportunitiesPage = () => {
   const navigate = useNavigate();
-  const { openCvScoring, openAi } = useOutletContext();
+  const { openAi } = useOutletContext();
   const [filters, setFilters] = useState({
     search: '',
     type: 'Tout voir',
@@ -46,9 +46,6 @@ export const OpportunitiesPage = () => {
         error={error?.message}
         onSelectOpportunity={(opp) => {
           navigate(`/opportunities/${opp.id}`);
-        }}
-        onScoreOpportunity={(opp) => {
-          openCvScoring(opp);
         }}
       />
     </div>

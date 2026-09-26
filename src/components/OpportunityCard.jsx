@@ -1,7 +1,7 @@
 import React from 'react';
-import { Building2, MapPin, Calendar, ChevronRight, Sparkles } from 'lucide-react';
+import { Building2, MapPin, Calendar, ChevronRight } from 'lucide-react';
 
-export const OpportunityCard = ({ opportunity, onSelect, onScore }) => {
+export const OpportunityCard = ({ opportunity, onSelect }) => {
   const { title, company, type, description, tags, location, date, highlighted } = opportunity;
 
   // Badge styling based on type
@@ -77,34 +77,23 @@ export const OpportunityCard = ({ opportunity, onSelect, onScore }) => {
         )}
       </div>
 
-      {/* Footer: Location, Date & View + Scorer */}
-      <div className="pt-4 border-t border-gray-100 flex flex-col gap-3">
-        <div className="flex items-center justify-between text-xs text-gray-500 font-medium">
-          <div className="flex items-center gap-4">
-            <div className="flex items-center gap-1.5">
-              <MapPin className="w-3.5 h-3.5 text-gray-400" />
-              <span>{location}</span>
-            </div>
-            <div className="flex items-center gap-1.5">
-              <Calendar className="w-3.5 h-3.5 text-gray-400" />
-              <span>{date}</span>
-            </div>
+      {/* Footer: Location, Date & View */}
+      <div className="pt-4 border-t border-gray-100 flex items-center justify-between text-xs text-gray-500 font-medium">
+        <div className="flex items-center gap-4">
+          <div className="flex items-center gap-1.5">
+            <MapPin className="w-3.5 h-3.5 text-gray-400" />
+            <span>{location}</span>
           </div>
-
-          <div className="flex items-center gap-1 text-emerald-600 font-semibold group-hover:translate-x-1 transition-transform">
-            <span>Voir</span>
-            <ChevronRight className="w-4 h-4" />
+          <div className="flex items-center gap-1.5">
+            <Calendar className="w-3.5 h-3.5 text-gray-400" />
+            <span>{date}</span>
           </div>
         </div>
-        {onScore && (
-          <button
-            onClick={(e) => { e.stopPropagation(); onScore(opportunity); }}
-            className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-sm transition-colors cursor-pointer"
-          >
-            <Sparkles className="w-4 h-4" />
-            Scorer mon CV sur cette offre
-          </button>
-        )}
+
+        <div className="flex items-center gap-1 text-emerald-600 font-semibold group-hover:translate-x-1 transition-transform">
+          <span>Voir</span>
+          <ChevronRight className="w-4 h-4" />
+        </div>
       </div>
 
     </div>
