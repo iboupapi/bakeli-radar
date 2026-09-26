@@ -4,7 +4,6 @@ import { Navbar } from '../components/Navbar';
 import { Footer } from '../components/Footer';
 import { AlertsModal } from '../components/AlertsModal';
 import { RadarAiModal } from '../components/RadarAiModal';
-import { MonitoringModal } from '../components/MonitoringModal';
 import { CvScoringModal } from '../components/CvScoringModal';
 
 export const RootLayout = () => {
@@ -29,7 +28,6 @@ export const RootLayout = () => {
 
   const [isAlertsOpen, setIsAlertsOpen] = useState(false);
   const [isAiOpen, setIsAiOpen] = useState(false);
-  const [isMonitoringOpen, setIsMonitoringOpen] = useState(false);
   const [isCvScoringOpen, setIsCvScoringOpen] = useState(false);
   const [scoringJob, setScoringJob] = useState(null);
 
@@ -40,7 +38,6 @@ export const RootLayout = () => {
         setActiveTab={handleTabChange}
         onOpenAlerts={() => setIsAlertsOpen(true)}
         onOpenAi={() => setIsAiOpen(true)}
-        onOpenCvScoring={() => setIsCvScoringOpen(true)}
       />
 
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -52,11 +49,10 @@ export const RootLayout = () => {
         />
       </main>
 
-      <Footer onOpenMonitoring={() => setIsMonitoringOpen(true)} />
+      <Footer />
 
       <AlertsModal isOpen={isAlertsOpen} onClose={() => setIsAlertsOpen(false)} />
       <RadarAiModal isOpen={isAiOpen} onClose={() => setIsAiOpen(false)} />
-      <MonitoringModal isOpen={isMonitoringOpen} onClose={() => setIsMonitoringOpen(false)} />
       <CvScoringModal
         isOpen={isCvScoringOpen}
         onClose={() => { setIsCvScoringOpen(false); setScoringJob(null); }}

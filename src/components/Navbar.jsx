@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Bell, Sparkles, Menu, X, FileSearch } from 'lucide-react';
+import { Bell, Sparkles, Menu, X } from 'lucide-react';
 
-export const Navbar = ({ activeTab, setActiveTab, onOpenAlerts, onOpenAi, onOpenCvScoring }) => {
+export const Navbar = ({ activeTab, setActiveTab, onOpenAlerts, onOpenAi }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const handleNavClick = (tab) => {
@@ -64,15 +64,6 @@ export const Navbar = ({ activeTab, setActiveTab, onOpenAlerts, onOpenAi, onOpen
           >
             <Bell className="w-4 h-4 text-emerald-600" />
             <span>Alertes</span>
-          </button>
-
-          <button
-            onClick={onOpenCvScoring}
-            className="flex items-center gap-1.5 px-3 sm:px-4 py-2 rounded-full border border-emerald-200 bg-emerald-50 text-emerald-800 hover:bg-emerald-100 font-semibold text-xs sm:text-sm transition-all shadow-xs cursor-pointer"
-            title="Analyser son CV"
-          >
-            <FileSearch className="w-4 h-4 text-emerald-600" />
-            <span>Score CV</span>
           </button>
 
           <button

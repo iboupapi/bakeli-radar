@@ -490,4 +490,30 @@ export const apiService = {
   async getCvStats() {
     return await apiFetch(CV_API_URL, "/stats/");
   },
+
+  // Job Alerts (candidats) — backend radar_jobs + envoi Brevo
+  async createAlert({ email, keywords = "", sector = "", location = "", job_type = "", frequency = "daily" }) {
+    return await apiFetch(API_BASE_URL, "/alerts/", {
+      method: "POST",
+      body: JSON.stringify({ email, keywords, sector, location, job_type, frequency }),
+    });
+  },
+
+  async getAlerts(email) {
+    return await apiFetch(API_BASE_URL, `/alerts/list/?email=${encodeURIComponent(email)}`);
+  },
+
+  async deleteAlert(alertId, email) {
+    return await apiFetch(API_BASE_URL, `/alerts/${alertId}/?email=${encodeURIComponent(email)}`, {
+      method: "DELETE",
+    });
+  },
+
+  async getAlertStatus() {
+    try {
+      return await apiFetch(API_BASE_URL, "/alerts/status/");
+    } catch {
+      return { brevo_configured: false };
+    }
+  },
 };
