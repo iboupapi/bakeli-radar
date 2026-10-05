@@ -267,11 +267,22 @@ export const apiService = {
         color: colorsRegions[idx % colorsRegions.length],
       }));
 
+      const toPairs = (obj) => Object.entries(obj || {}).map(([name, value]) => ({ name, value: Number(value) || 0 }));
+      const topSkills = toPairs(data.top_skills).map((s, idx) => ({ ...s, color: colorsTypes[idx % colorsTypes.length] }));
+      const contracts = toPairs(data.contracts_distribution).map((s, idx) => ({ ...s, color: colorsRegions[idx % colorsRegions.length] }));
+      const topCompanies = toPairs(data.top_companies).slice(0, 8);
+      const sectorsDist = toPairs(data.sectors_distribution);
+
       return {
         success: true,
         totalJobs: data.total_jobs || 0,
         lastUpdate: data.last_update || new Date().toLocaleDateString("fr-FR"),
-        data: { typesDistribution, topRegions },
+        newJobs: data.new_jobs ?? null,
+        sectorsCount: (data.sectors || []).length,
+        topSectorShare: data.top_sector_share ?? null,
+        shareRealDescriptions: data.share_real_descriptions ?? null,
+        sourcesCount: data.sources_count ?? null,
+        data: { typesDistribution, topRegions, topSkills, contracts, topCompanies, sectorsDist },
       };
     } catch (err) {
       console.warn("[API] getMarketInsights fallback due to:", err.message);
