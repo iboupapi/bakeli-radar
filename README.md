@@ -1,16 +1,20 @@
-# BakeliRadar — Plateforme Web & Veille d'Opportunités (Sénégal)
 
-Plateforme web moderne d'agrégation, de veille d'opportunités (emplois, stages, bourses, concours, prestations, formations), d'analyse de marché et de scoring CV par IA au Sénégal.
+# BakeliRadar - Frontend React & Veille d'Opportunités
+
+Plateforme web moderne d'agrégation et de veille d'opportunités (emplois, stages, bourses, concours, prestations, formations), d'insights du marché au Sénégal, et de scoring CV par IA.
 
 ---
 
 ## 🚀 Stack Technique & Architecture
 
-- **React 19** + **Vite** (Build rapide, HMR)
-- **Tailwind CSS v3** (Design system moderne & responsive)
-- **Lucide React** (Icônes vectorielles)
-- **Recharts** (Visualisation des tendances du marché)
-- **Architecture Modulaire** (Séparation claire des responsabilités entre composants, services API et état global).
+
+- **React 19** + **Vite** (Build ultrarapide et HMR)
+- **React Router DOM** (Routage client et navigation par pages)
+- **TanStack Query (`@tanstack/react-query`)** (Gestion d'état serveur, cache et requêtes API)
+- **Tailwind CSS v3** (Design system & styling moderne)
+- **Lucide React** (Icônes vectorielles épurées)
+- **Recharts** (Visualisation des données et tendances du marché)
+
 
 ---
 
@@ -18,21 +22,30 @@ Plateforme web moderne d'agrégation, de veille d'opportunités (emplois, stages
 
 ```text
 src/
-├── components/          # Composants UI modulaires
-│   ├── AlertsModal.jsx      # Gestion des alertes email personnalisées
+├── components/          # Composants UI modulaires et réutilisables
+│   ├── AlertsModal.jsx      # Modale de création d'alertes email
 │   ├── CvScoringModal.jsx   # Scoring CV par IA & gestion profil candidat
-│   ├── MarketTrends.jsx     # Visualisation graphique (Recharts)
-│   ├── MonitoringModal.jsx  # État de santé et monitoring de l'API backend
-│   ├── Navbar.jsx           # En-tête de navigation principale & actions
-│   ├── OpportunityCard.jsx  # Carte individuelle d'opportunité
-│   ├── OpportunityList.jsx  # Grille des offres et indicateurs de résultats
-│   ├── PartnersView.jsx     # Vue des entreprises partenaires
-│   └── RadarAiModal.jsx     # Assistant conversationnel intelligent (IA)
+│   ├── Footer.jsx           # Pied de page officiel (Bakeli School of Technology)
+│   ├── MarketTrends.jsx     # Vue "Tendances Marché" (Graphiques barres & doughnut)
+│   ├── MonitoringModal.jsx  # État de santé et métriques du backend
+│   ├── Navbar.jsx           # En-tête (Navigation, Logo officiel & Actions)
+│   ├── OpportunityCard.jsx  # Carte individuelle d'opportunité avec badges colorés
+│   ├── OpportunityList.jsx# Grille des opportunités et en-tête de résultats
+│   ├── PartnersView.jsx     # Vue "Partenaires"
+│   ├── RadarAiModal.jsx     # Assistant conversationnel "Radar AI" (Panneau latéral)
+│   └── SidebarFilters.jsx   # Barre latérale de filtres sticky
+├── layouts/
+│   └── RootLayout.jsx       # Layout global (Navbar, Outlet, Footer, Modales)
+├── pages/
+│   ├── JobDetailPage.jsx    # Page de détail d'une offre
+│   ├── MarketInsightsPage.jsx# Page des tendances du marché
+│   ├── OpportunitiesPage.jsx# Page principale des offres et filtres
+│   └── PartnersPage.jsx     # Page des partenaires
 ├── services/
-│   └── api.js           # Couche API centralisée (JWT, Endpoints REST, fallbacks robustes)
-├── App.jsx              # Composant racine & routage des vues principales
-├── main.jsx             # Point d'entrée React 19
-└── index.css            # Styles globaux & directives Tailwind
+│   └── api.js           # Couche API centralisée (JWT, Endpoints REST, fallbacks)
+├── App.jsx              # Définition des routes principales
+├── main.jsx             # Point d'entrée React avec QueryClientProvider & Router
+└── index.css            # Directives Tailwind CSS
 ```
 
 ---
@@ -58,13 +71,3 @@ src/
    ```bash
    npm run build
    ```
-
----
-
-## 🔌 Intégration Backend & Services (`src/services/api.js`)
-
-La couche `api.js` gère la communication avec l'API backend Django (`api-wagan.bakeli.tech`), incluant :
-- Authentification JWT (stockage local, headers d'autorisation).
-- Filtrage des opportunités par type, région et recherche textuelle.
-- Endpoints de scoring CV (`/api/cv-scoring/`).
-- Gestion transparente des fallbacks en cas de indisponibilité réseau ou mode local.

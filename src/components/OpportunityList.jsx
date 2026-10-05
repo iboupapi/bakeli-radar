@@ -1,6 +1,6 @@
 import React from 'react';
 import { OpportunityCard } from './OpportunityCard';
-import { Sparkles, Inbox } from 'lucide-react';
+import { Inbox } from 'lucide-react';
 
 export const OpportunityList = ({ opportunities, lastUpdated, onSelectOpportunity }) => {
   return (

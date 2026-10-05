@@ -17,9 +17,11 @@
     "vite": "^8.2.2"
   },
   "dependencies": {
+    "@tanstack/react-query": "^5.103.0",
     "lucide-react": "^1.38.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
+    "react-router-dom": "^7.18.4",
     "recharts": "^3.10.1"
   }
 }

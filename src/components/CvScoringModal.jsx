@@ -2,9 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { FileUp, X, Sparkles, CheckCircle2, AlertCircle, Award, History, BarChart3, User, LogIn, LogOut, RefreshCw } from 'lucide-react';
 import { apiService } from '../services/api';
 
-export const CvScoringModal = ({ isOpen, onClose }) => {
+export const CvScoringModal = ({ isOpen, onClose, selectedJob }) => {
   const [activeTab, setActiveTab] = useState('direct'); // 'direct' | 'profile' | 'history' | 'stats'
   const [isLoggedIn, setIsLoggedIn] = useState(apiService.isLoggedIn());
+  // job scrapé pré-sélectionné depuis OpportunityCard
+  // offer_url préféré (stable après re-scraping), fallback id numérique
+  const scrapedJobId = selectedJob ? String(selectedJob.offer_url ?? selectedJob.id ?? "") : null;
+  const scrapedJobLabel = selectedJob ? `${selectedJob.title || "Offre"} — ${selectedJob.company || ""}` : null;
+  const scrapedJobIsUrl = scrapedJobId ? scrapedJobId.startsWith("http") : false;
   
   // Auth state
   const [username, setUsername] = useState('');
@@ -27,11 +32,21 @@ export const CvScoringModal = ({ isOpen, onClose }) => {
   useEffect(() => {
     if (isOpen) {
       setIsLoggedIn(apiService.isLoggedIn());
+      // Si une offre scrapée est passée, on force l'onglet adapté (profile si connecté, sinon direct)
+      if (selectedJob) {
+        // Ne force pas si l'utilisateur navigue déjà dans history/stats
+        if (activeTab === 'direct' || activeTab === 'auth') {
+          // reste sur direct (upload CV seul) ou profile selon login
+        }
+      }
       if (apiService.isLoggedIn()) {
         loadUserData();
       }
+      // reset résultat quand on change d'offre
+      setResult(null);
+      setError(null);
     }
-  }, [isOpen, activeTab]);
+  }, [isOpen, activeTab, selectedJob]);
 
   const loadUserData = async () => {
     try {
@@ -70,6 +85,34 @@ export const CvScoringModal = ({ isOpen, onClose }) => {
 
   const handleDirectMatch = async (e) => {
     e.preventDefault();
+    // Mode scrapé : offre déjà sélectionnée -> un seul fichier CV + job_id (offer_url)
+    if (scrapedJobId) {
+      if (!cvFile) {
+        setError("Veuillez sélectionner votre CV.");
+        return;
+      }
+      setLoading(true);
+      setError(null);
+      try {
+        // Tentative 1: offer_url (stable), Tentative 2: id si échec
+        let res;
+        try {
+          res = await apiService.analyzeScrapedPublic(scrapedJobId, cvFile);
+        } catch (err) {
+          if (scrapedJobIsUrl && selectedJob?.id != null && String(err.message).includes("non trouvée")) {
+            res = await apiService.analyzeScrapedPublic(String(selectedJob.id), cvFile);
+          } else {
+            throw err;
+          }
+        }
+        setResult(res.result || res);
+      } catch (err) {
+        setError(err.message || "Erreur lors de l'analyse scrapée.");
+      } finally {
+        setLoading(false);
+      }
+      return;
+    }
     if (!cvFile || !jobFile) {
       setError("Veuillez sélectionner un CV et une offre.");
       return;
@@ -88,6 +131,20 @@ export const CvScoringModal = ({ isOpen, onClose }) => {
 
   const handleAnalyzeStored = async (e) => {
     e.preventDefault();
+    // Mode scrapé avec profil : utilise l'offre sélectionnée
+    if (scrapedJobId) {
+      setLoading(true);
+      setError(null);
+      try {
+        const res = await apiService.analyzeScrapedProfile(scrapedJobId);
+        setResult(res.result || res);
+      } catch (err) {
+        setError(err.message || "Erreur lors de l'analyse du CV stocké (offre scrapée).");
+      } finally {
+        setLoading(false);
+      }
+      return;
+    }
     if (!jobUrl) {
       setError("Veuillez entrer une URL d'offre.");
       return;
@@ -180,6 +237,19 @@ export const CvScoringModal = ({ isOpen, onClose }) => {
           )}
         </div>
 
+        {/* Bandeau offre scrapée sélectionnée */}
+        {selectedJob && (
+          <div className="mx-6 mt-4 bg-emerald-50 border border-emerald-200 rounded-2xl p-4 flex items-start justify-between gap-3">
+            <div className="flex flex-col gap-1">
+              <span className="text-[11px] font-bold text-emerald-700 uppercase tracking-wider flex items-center gap-1.5"><Sparkles className="w-3.5 h-3.5" /> Offre sélectionnée</span>
+              <p className="text-sm font-bold text-emerald-900 line-clamp-2">{scrapedJobLabel}</p>
+              <p className="text-xs text-emerald-700/70 break-all">{scrapedJobIsUrl ? `URL: ${scrapedJobId.slice(0,60)}…` : `ID: ${scrapedJobId}`} • {selectedJob.location || ""} • {selectedJob.type || ""}</p>
+              {selectedJob.offer_url && <a href={selectedJob.offer_url} target="_blank" rel="noreferrer" className="text-xs text-emerald-700 underline">Voir l'offre originale</a>}
+            </div>
+            <span className="px-2.5 py-1 bg-white border border-emerald-200 rounded-full text-xs font-semibold text-emerald-700 whitespace-nowrap">Scrapée</span>
+          </div>
+        )}
+
         {/* Body */}
         <div className="p-6 overflow-y-auto flex flex-col gap-6 bg-gray-50/50 flex-1">
           
@@ -243,22 +313,31 @@ export const CvScoringModal = ({ isOpen, onClose }) => {
                 )}
 
                 <div className="flex flex-col gap-2">
-                  <label className="text-xs font-bold uppercase tracking-wider text-gray-500">Votre CV (PDF / DOCX)</label>
+                  <label className="text-xs font-bold uppercase tracking-wider text-gray-500">Votre CV (PDF / DOCX — max 5 Mo)</label>
                   <label className="border-2 border-dashed border-gray-200 hover:border-emerald-500 rounded-2xl p-6 flex flex-col items-center justify-center gap-2 bg-white cursor-pointer transition-colors">
                     <FileUp className="w-8 h-8 text-gray-400" />
                     <span className="text-sm font-semibold text-gray-700">{cvFile ? cvFile.name : "Importer votre CV"}</span>
-                    <input type="file" accept=".pdf,.doc,.docx" onChange={(e) => setCvFile(e.target.files[0])} className="hidden" />
+                    <input type="file" accept=".pdf,.doc,.docx,.txt,.md" onChange={(e) => setCvFile(e.target.files[0])} className="hidden" />
                   </label>
                 </div>
 
-                <div className="flex flex-col gap-2">
-                  <label className="text-xs font-bold uppercase tracking-wider text-gray-500">Offre d'emploi (Fichier)</label>
-                  <label className="border-2 border-dashed border-gray-200 hover:border-emerald-500 rounded-2xl p-6 flex flex-col items-center justify-center gap-2 bg-white cursor-pointer transition-colors">
-                    <FileUp className="w-8 h-8 text-gray-400" />
-                    <span className="text-sm font-semibold text-gray-700">{jobFile ? jobFile.name : "Importer l'offre"}</span>
-                    <input type="file" accept=".pdf,.doc,.docx,.txt" onChange={(e) => setJobFile(e.target.files[0])} className="hidden" />
-                  </label>
-                </div>
+                {scrapedJobId ? (
+                  <div className="bg-white border border-emerald-100 rounded-2xl p-4 flex flex-col gap-1">
+                    <span className="text-xs font-bold text-emerald-700">Offre utilisée</span>
+                    <span className="text-sm text-gray-700">{scrapedJobLabel}</span>
+                    <span className="text-xs text-gray-500">Vous n'avez plus qu'à déposer votre CV — l'offre est déjà chargée.</span>
+                  </div>
+                ) : (
+                  <div className="flex flex-col gap-2">
+                    <label className="text-xs font-bold uppercase tracking-wider text-gray-500">Offre d'emploi (Fichier)</label>
+                    <label className="border-2 border-dashed border-gray-200 hover:border-emerald-500 rounded-2xl p-6 flex flex-col items-center justify-center gap-2 bg-white cursor-pointer transition-colors">
+                      <FileUp className="w-8 h-8 text-gray-400" />
+                      <span className="text-sm font-semibold text-gray-700">{jobFile ? jobFile.name : "Importer l'offre"}</span>
+                      <input type="file" accept=".pdf,.doc,.docx,.txt" onChange={(e) => setJobFile(e.target.files[0])} className="hidden" />
+                    </label>
+                    <p className="text-xs text-gray-400">Astuce : cliquez sur <b>Scorer mon CV sur cette offre</b> depuis une carte pour pré-remplir l'offre scrapée.</p>
+                  </div>
+                )}
 
                 <button
                   type="submit"
@@ -327,20 +406,33 @@ export const CvScoringModal = ({ isOpen, onClose }) => {
                 </p>
 
                 <form onSubmit={handleAnalyzeStored} className="flex flex-col gap-3 pt-4 border-t border-gray-100">
-                  <label className="text-xs font-bold uppercase tracking-wider text-gray-500">Analyser mon CV stocké vs URL d'offre</label>
-                  <input
-                    type="url"
-                    placeholder="https://emploisenegal.com/offre/..."
-                    value={jobUrl}
-                    onChange={(e) => setJobUrl(e.target.value)}
-                    className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500"
-                  />
+                  {scrapedJobId ? (
+                    <>
+                      <label className="text-xs font-bold uppercase tracking-wider text-gray-500">Offre sélectionnée (CV stocké)</label>
+                      <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-3">
+                        <p className="text-sm font-semibold text-emerald-900">{scrapedJobLabel}</p>
+                        <p className="text-xs text-emerald-700">ID: {scrapedJobId}</p>
+                      </div>
+                      <p className="text-xs text-gray-500">Votre CV enregistré sera automatiquement comparé à cette offre scrapée.</p>
+                    </>
+                  ) : (
+                    <>
+                      <label className="text-xs font-bold uppercase tracking-wider text-gray-500">Analyser mon CV stocké vs URL d'offre</label>
+                      <input
+                        type="url"
+                        placeholder="https://emploisenegal.com/offre/..."
+                        value={jobUrl}
+                        onChange={(e) => setJobUrl(e.target.value)}
+                        className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500"
+                      />
+                    </>
+                  )}
                   <button
                     type="submit"
                     disabled={loading}
                     className="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl text-sm transition-all shadow-md cursor-pointer"
                   >
-                    {loading ? "Analyse en cours..." : "Lancer l'analyse du profil"}
+                    {loading ? "Analyse en cours..." : scrapedJobId ? "Scorer mon CV stocké" : "Lancer l'analyse du profil"}
                   </button>
                 </form>
               </div>
