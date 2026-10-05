@@ -1,10 +1,12 @@
+
 # BakeliRadar - Frontend React & Veille d'Opportunités
 
 Plateforme web moderne d'agrégation et de veille d'opportunités (emplois, stages, bourses, concours, prestations, formations), d'insights du marché au Sénégal, et de scoring CV par IA.
 
 ---
 
-## 🚀 Stack Technique
+## 🚀 Stack Technique & Architecture
+
 
 - **React 19** + **Vite** (Build ultrarapide et HMR)
 - **React Router DOM** (Routage client et navigation par pages)
@@ -12,6 +14,7 @@ Plateforme web moderne d'agrégation et de veille d'opportunités (emplois, stag
 - **Tailwind CSS v3** (Design system & styling moderne)
 - **Lucide React** (Icônes vectorielles épurées)
 - **Recharts** (Visualisation des données et tendances du marché)
+
 
 ---
 
