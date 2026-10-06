@@ -178,6 +178,7 @@ export const apiService = {
       if (filters.type && filters.type !== "Tout voir") params.append("type", filters.type);
       if (filters.location && filters.location !== "Toute les régions") params.append("location", filters.location);
       if (filters.search) params.append("search", filters.search);
+      if (filters.company) params.append("company", filters.company);
 
       const res = await apiFetch(API_BASE_URL, `/jobs/?${params.toString()}`);
 
@@ -228,6 +229,10 @@ export const apiService = {
             item.description.toLowerCase().includes(q) ||
             item.tags.some((t) => t.toLowerCase().includes(q))
         );
+      }
+      if (filters.company) {
+        const compQ = filters.company.toLowerCase();
+        data = data.filter((item) => (item.company || "").toLowerCase().includes(compQ));
       }
       if (filters.type && filters.type !== "Tout voir") {
         data = data.filter((item) => item.type.toLowerCase() === filters.type.toLowerCase());
