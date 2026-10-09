@@ -25,7 +25,7 @@ export const MarketInsightsPage = () => {
   }
 
   return (
-    <div className="py-6 animate-fadeIn">
+    <div className="py-2 sm:py-6 animate-fadeIn min-w-0 overflow-x-hidden">
       <MarketTrends marketStats={marketStats} kpis={kpis} />
     </div>
   );

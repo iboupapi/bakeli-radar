@@ -181,7 +181,10 @@ export const RadarAiModal = ({ isOpen, onClose }) => {
   };
 
   return (
-    <div className="fixed right-6 bottom-6 w-[380px] sm:w-[400px] h-[540px] rounded-3xl shadow-2xl z-50 bg-white flex flex-col border border-gray-100 overflow-hidden animate-fadeIn">
+    <div className="fixed z-50 bg-white flex flex-col border border-gray-100 overflow-hidden animate-fadeIn
+      inset-x-3 bottom-3 top-[8dvh] rounded-2xl shadow-2xl
+      sm:inset-x-auto sm:right-4 sm:bottom-4 sm:top-auto sm:w-[400px] sm:h-[540px] sm:max-h-[calc(100dvh-2rem)] sm:rounded-3xl
+      lg:right-6 lg:bottom-6 pb-safe">
       
       {/* Header */}
       <div className="bg-emerald-700 text-white p-4 flex items-center justify-between relative shrink-0">

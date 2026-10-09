@@ -32,7 +32,7 @@ export const OpportunitiesPage = () => {
   const lastUpdated = data?.lastUpdated || "Aujourd'hui";
 
   return (
-    <div className="flex flex-col lg:flex-row gap-8 items-start py-2 animate-fadeIn">
+    <div className="flex flex-col lg:flex-row gap-4 sm:gap-6 lg:gap-8 items-stretch lg:items-start py-1 sm:py-2 animate-fadeIn min-w-0">
       <SidebarFilters
         filters={filters}
         onFilterChange={setFilters}

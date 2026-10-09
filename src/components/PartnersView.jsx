@@ -12,30 +12,30 @@ const iconMap = {
 
 export const PartnersView = ({ partners }) => {
   return (
-    <div className="flex-1 flex flex-col gap-8 animate-fadeIn">
-      
+    <div className="flex-1 flex flex-col gap-5 sm:gap-8 animate-fadeIn min-w-0">
+       
       {/* Title section */}
-      <div className="flex flex-col gap-2">
-        <div className="flex items-center gap-2 text-emerald-600 font-semibold text-sm uppercase tracking-wider">
-          <Award className="w-4 h-4" />
+      <div className="flex flex-col gap-1.5 sm:gap-2">
+        <div className="flex items-center gap-2 text-emerald-600 font-semibold text-xs sm:text-sm uppercase tracking-wider">
+          <Award className="w-4 h-4 shrink-0" />
           <span>Écosystème & Entreprises</span>
         </div>
-        <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight">
+        <h1 className="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight leading-tight">
           Nos Partenaires de Confiance
         </h1>
-        <p className="text-gray-500 text-base">
+        <p className="text-gray-500 text-sm sm:text-base leading-relaxed">
           Découvrez les organisations et entreprises qui publient régulièrement leurs opportunités sur BakeliRadar.
         </p>
       </div>
 
       {/* Partners Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-5 lg:gap-6">
         {partners.map((partner, index) => {
           const IconComponent = iconMap[partner.icon] || Building2;
           return (
             <div 
               key={index}
-              className="bg-white rounded-2xl p-6 border border-gray-100 hover:border-emerald-200 transition-all shadow-xs hover:shadow-lg flex flex-col justify-between gap-6 group"
+              className="bg-white rounded-2xl p-5 sm:p-6 border border-gray-100 hover:border-emerald-200 transition-all shadow-xs hover:shadow-lg flex flex-col justify-between gap-5 sm:gap-6 group min-w-0"
             >
               <div className="flex items-start justify-between">
                 <div className="w-14 h-14 rounded-2xl bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-600 shadow-inner group-hover:scale-105 transition-transform">

@@ -73,24 +73,25 @@ export const CvScoringModal = ({ isOpen, onClose, selectedJob }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/50 backdrop-blur-xs animate-fadeIn">
-      <div className="bg-white rounded-3xl w-[95vw] sm:max-w-2xl max-h-[90vh] shadow-2xl border border-gray-100 flex flex-col overflow-hidden relative">
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center sm:p-4 bg-black/50 backdrop-blur-xs animate-fadeIn">
+      <div className="bg-white rounded-t-3xl sm:rounded-3xl w-full sm:w-[95vw] sm:max-w-2xl max-h-[92dvh] shadow-2xl border border-gray-100 flex flex-col overflow-hidden relative pb-safe">
         
         {/* Header */}
-        <div className="bg-emerald-800 text-white p-6 flex items-center justify-between relative shrink-0">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-emerald-700/80 flex items-center justify-center text-emerald-200">
-              <Sparkles className="w-6 h-6 animate-pulse" />
+        <div className="bg-emerald-800 text-white p-4 sm:p-6 flex items-center justify-between gap-3 relative shrink-0">
+          <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-emerald-700/80 flex items-center justify-center text-emerald-200 shrink-0">
+              <Sparkles className="w-5 h-5 sm:w-6 sm:h-6 animate-pulse" />
             </div>
-            <div>
-              <h3 className="font-extrabold text-lg text-white">Analyse & Scoring CV (IA)</h3>
-              <p className="text-xs text-emerald-200 font-medium">Matching intelligent CV / offre</p>
+            <div className="min-w-0">
+              <h3 className="font-extrabold text-base sm:text-lg text-white leading-tight truncate">Analyse & Scoring CV (IA)</h3>
+              <p className="text-[11px] sm:text-xs text-emerald-200 font-medium">Matching intelligent CV / offre</p>
             </div>
           </div>
 
           <button
             onClick={onClose}
-            className="w-9 h-9 rounded-full bg-emerald-700/60 hover:bg-emerald-700 text-white flex items-center justify-center transition-colors cursor-pointer"
+            aria-label="Fermer"
+            className="w-10 h-10 sm:w-9 sm:h-9 rounded-full bg-emerald-700/60 hover:bg-emerald-700 text-white flex items-center justify-center transition-colors cursor-pointer shrink-0"
           >
             <X className="w-5 h-5" />
           </button>
@@ -98,7 +99,7 @@ export const CvScoringModal = ({ isOpen, onClose, selectedJob }) => {
 
         {/* Bandeau offre scrapée sélectionnée */}
         {selectedJob && (
-          <div className="mx-6 mt-4 bg-emerald-50 border border-emerald-200 rounded-2xl p-4 flex items-start justify-between gap-3">
+          <div className="mx-3 sm:mx-6 mt-3 sm:mt-4 bg-emerald-50 border border-emerald-200 rounded-2xl p-3 sm:p-4 flex items-start justify-between gap-2 sm:gap-3">
             <div className="flex flex-col gap-1">
               <span className="text-[11px] font-bold text-emerald-700 uppercase tracking-wider flex items-center gap-1.5"><Sparkles className="w-3.5 h-3.5" /> Offre sélectionnée</span>
               <p className="text-sm font-bold text-emerald-900 line-clamp-2">{scrapedJobLabel}</p>
@@ -110,7 +111,7 @@ export const CvScoringModal = ({ isOpen, onClose, selectedJob }) => {
         )}
 
         {/* Body : scoring uniquement, sans compte */}
-        <div className="p-6 overflow-y-auto flex flex-col gap-6 bg-gray-50/50 flex-1">
+        <div className="p-4 sm:p-6 overflow-y-auto flex flex-col gap-5 sm:gap-6 bg-gray-50/50 flex-1">
 
           {result ? (
               <div className="flex flex-col gap-6 animate-fadeIn">

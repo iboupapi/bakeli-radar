@@ -67,8 +67,8 @@ export const AlertsModal = ({ isOpen, onClose }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/50 backdrop-blur-xs animate-fadeIn">
-      <div className="bg-white rounded-2xl w-[95vw] sm:max-w-md max-h-[92vh] flex flex-col shadow-2xl border border-gray-100 relative overflow-hidden">
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/50 backdrop-blur-xs animate-fadeIn">
+      <div className="bg-white rounded-t-3xl sm:rounded-2xl w-full sm:w-[95vw] sm:max-w-md max-h-[92dvh] flex flex-col shadow-2xl border border-gray-100 relative overflow-hidden pb-safe">
 
         {/* Header compact */}
         <div className="flex items-center gap-3 px-5 pt-5 pb-3 shrink-0">
@@ -140,13 +140,13 @@ export const AlertsModal = ({ isOpen, onClose }) => {
             />
           </div>
 
-          <div className="grid grid-cols-3 gap-2">
-            <div className="flex flex-col gap-1">
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+            <div className="flex flex-col gap-1 min-w-0">
               <label className="text-xs font-bold uppercase tracking-wider text-gray-500">Secteur</label>
               <select
                 value={sector}
                 onChange={(e) => setSector(e.target.value)}
-                className="w-full px-2 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 cursor-pointer"
+                className="w-full px-2 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 cursor-pointer min-h-[44px] truncate"
               >
                 <option value="">Tous</option>
                 <option value="Informatique">Info.</option>
@@ -160,22 +160,22 @@ export const AlertsModal = ({ isOpen, onClose }) => {
                 <option value="Services">Services</option>
               </select>
             </div>
-            <div className="flex flex-col gap-1">
+            <div className="flex flex-col gap-1 min-w-0">
               <label className="text-xs font-bold uppercase tracking-wider text-gray-500">Lieu</label>
               <input
                 type="text"
                 placeholder="Dakar"
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
-                className="w-full px-3 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white transition-all"
+                className="w-full px-3 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white transition-all min-h-[44px]"
               />
             </div>
-            <div className="flex flex-col gap-1">
+            <div className="flex flex-col gap-1 min-w-0 col-span-2 sm:col-span-1">
               <label className="text-xs font-bold uppercase tracking-wider text-gray-500">Fréquence</label>
               <select
                 value={frequency}
                 onChange={(e) => setFrequency(e.target.value)}
-                className="w-full px-2 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 cursor-pointer"
+                className="w-full px-2 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 cursor-pointer min-h-[44px]"
               >
                 <option value="instant">Instant.</option>
                 <option value="daily">Quotidien</option>
@@ -187,7 +187,7 @@ export const AlertsModal = ({ isOpen, onClose }) => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-2.5 px-4 bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 text-white font-semibold rounded-xl transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer"
+            className="w-full py-3 px-4 bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 text-white font-semibold rounded-xl transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer min-h-[48px]"
           >
             {loading ? <RefreshCw className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />}
             <span>Activer l'alerte</span>

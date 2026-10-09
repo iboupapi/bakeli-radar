@@ -16,7 +16,7 @@ export const PartnersPage = () => {
   }
 
   return (
-    <div className="py-6 animate-fadeIn">
+    <div className="py-2 sm:py-6 animate-fadeIn min-w-0">
       <PartnersView partners={partners} />
     </div>
   );
