@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 # BakeliRadar - Frontend React & Veille d'Opportunités
 
@@ -71,3 +72,6 @@ src/
    ```bash
    npm run build
    ```
+=======
+# Bakeli-radar
+>>>>>>> 2a96062982e60472d0002219f676b8c51dd927c0
